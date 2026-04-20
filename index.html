@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zuzi Tour — Горные туры по Таджикистану</title>
+    <style>
+        /* Базовые настройки стиля */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            color: #333; 
+            line-height: 1.6; 
+            scroll-behavior: smooth; 
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+        
+        a { text-decoration: none; color: inherit; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header { 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 1px; color: #000000; }
+        .logo span { color: #0056b3; }
+
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li a { font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        nav ul li a:hover { color: #0056b3; }
+
+        /* ГЛАВНЫЙ ФОН */
+        .hero { 
+            height: 100vh; 
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), 
+                url('hero.jpg'); 
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            color: white; text-align: center; padding: 0 20px; 
+        }
+        
+        .hero h1 { 
+            font-size: clamp(2.5rem, 10vw, 4.5rem); 
+            margin-bottom: 20px; 
+            text-transform: uppercase; 
+            text-shadow: 2px 4px 15px rgba(0,0,0,0.6);
+            line-height: 1.1;
+        }
+        .hero p { font-size: 1.2rem; margin-bottom: 40px; max-width: 600px; }
+
+        section { padding: 100px 0; }
+        section h2 { 
+            font-size: 2.8rem; 
+            margin-bottom: 60px; 
+            text-align: center; 
+            color: #2c3e50; 
+            position: relative;
+        }
+        section h2::after { 
+            content: ''; display: block; width: 60px; height: 4px; background: #0056b3; margin: 15px auto 0; border-radius: 2px;
+        }
+
+        .tours { background: #f9f9f9; }
+        .tour-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 40px; 
+        }
+        .tour-card { 
+            background: #fff; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); 
+            transition: 0.4s; 
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+        .tour-card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15); }
+
+        /* СЛАЙДЕР */
+        .tour-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;  
+        }
+        .tour-slider::-webkit-scrollbar {
+            display: none; 
+        }
+
+        .tour-card-img {
+            min-width: 100%; 
+            height: 250px;
+            scroll-snap-align: start;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #eee;
+        }
+
+        /* ПУТИ К ФАЙЛАМ (по 3 на каждое направление) */
+        .img-iskanderkul-1 { background-image: url('iskanderkul.jpg'); }
+        .img-iskanderkul-2 { background-image: url('iskanderkul2.jpg'); }
+        .img-iskanderkul-3 { background-image: url('iskanderkul3.jpg'); }
+        
+        .img-alouddin-1 { background-image: url('alouddin.jpg'); }
+        .img-alouddin-2 { background-image: url('alouddin2.jpg'); }
+        .img-alouddin-3 { background-image: url('alouddin3.jpg'); }
+        
+        .img-timurdara-1 { background-image: url('timurdara.jpg'); }
+        .img-timurdara-2 { background-image: url('timurdara2.jpg'); }
+        .img-timurdara-3 { background-image: url('timurdara3.jpg'); }
+        
+        .img-khodja-1 { background-image: url('khodja.jpg'); }
+        .img-khodja-2 { background-image: url('khodja2.jpg'); }
+        .img-khodja-3 { background-image: url('khodja3.jpg'); }
+
+
+        .tour-info { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .tour-info h3 { margin-bottom: 15px; color: #2c3e50; font-size: 1.4rem;}
+        .tour-info p { color: #666; font-size: 0.95rem; margin-bottom: 25px; flex-grow: 1; }
+        .price-tag { text-align: right; }
+        .price { font-weight: bold; color: #0056b3; border: 2px solid #0056b3; padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; text-transform: uppercase; }
+
+        .benefits { background: #fff; }
+        .benefit-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 40px; 
+        }
+        .benefit-item { 
+            text-align: center; 
+            padding: 40px;
+            background: #fcfcfc;
+            border-radius: 20px;
+            border: 1px solid #f0f0f0;
+        }
+        .benefit-icon { font-size: 4rem; margin-bottom: 20px; display: block; }
+        .benefit-item h3 { margin-bottom: 10px; color: #2c3e50; }
+
+        .contact { background: #f9f9f9; text-align: center; }
+        .contact p { margin-bottom: 40px; font-size: 1.2rem; color: #555; }
+
+        .btn { 
+            padding: 18px 45px; 
+            background: #0056b3; 
+            color: white; 
+            border-radius: 40px; 
+            font-weight: bold; 
+            transition: 0.3s; 
+            display: inline-block; 
+            box-shadow: 0 10px 20px rgba(0, 86, 179, 0.2);
+        }
+        .btn:hover { background: #004494; transform: scale(1.05) translateY(-3px); box-shadow: 0 15px 25px rgba(0, 86, 179, 0.3); }
+        .btn-insta { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
+
+        footer { background: #2c3e50; color: #fff; text-align: center; padding: 50px 20px; }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 15px; text-align: center; padding: 20px; }
+            nav ul { gap: 15px; flex-wrap: wrap; justify-content: center;}
+            .hero { height: 90vh; background-attachment: scroll; }
+        }
+        
+        .logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover { transform: scale(1.05); }
+        .logo-link { display: flex; align-items: center; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <a href="#" class="logo-link">
+            <img src="logo.jpg">
+        </a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#tours">Направления</a></li>
+            <li><a href="#benefits">О нас</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Красота Гор Таджикистана</h1>
+            <p>Ваши персональные гиды по самым живописным озерам и вершинам гор.</p>
+            <a href="#contact" class="btn">Забронировать тур</a>
+        </div>
+    </section>
+
+    <section id="tours" class="tours">
+        <div class="container">
+            <h2>Наши Маршруты</h2>
+            <div class="tour-grid">
+                
+                <div class="tour-card">
+                    <div class="tour-slider">
+                        <div class="tour-card-img img-iskanderkul-1"></div>
+                        <div class="tour-card-img img-iskanderkul-2"></div>
+                        <div class="tour-card-img img-iskanderkul-3"></div>
+                    </div>
+                    <div class="tour-info">
+                        <h3>Озеро Искандеркуль</h3>
+                        <p>Легендарное озеро Александра Македонского. Насладитесь бирюзовой водой и мощным водопадом "Фанская Ниагара".</p>
+                        <div class="price-tag">
+                            <a href="https://www.instagram.com/zuzi_tour" target="_blank">
+                            <span class="price">Direct</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tour-card">
+                    <div class="tour-slider">
+                        <div class="tour-card-img img-alouddin-1"></div>
+                        <div class="tour-card-img img-alouddin-2"></div>
+                        <div class="tour-card-img img-alouddin-3"></div>
+                    </div>
+                    <div class="tour-info">
+                        <h3>Алоуддинские озера</h3>
+                        <p>Кристально чистые озера с невероятным цветом воды от небесно-голубого до густо-фиолетового.</p>
+                        <div class="price-tag">
+                            <a href="https://www.instagram.com/zuzi_tour" target="_blank">
+                            <span class="price">Direct</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tour-card">
+                    <div class="tour-slider">
+                        <div class="tour-card-img img-timurdara-1"></div>
+                        <div class="tour-card-img img-timurdara-2"></div>
+                        <div class="tour-card-img img-timurdara-3"></div>
+                    </div>
+                    <div class="tour-info">
+                        <h3>Озеро Тимурдара</h3>
+                        <p>Уединенное горное озеро среди арчовых лесов. Идеальное место для тех, кто ищет тишину.</p>
+                        <div class="price-tag">
+                            <a href="https://www.instagram.com/zuzi_tour" target="_blank">
+                            <span class="price">Direct</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="tour-card">
+                    <div class="tour-slider">
+                        <div class="tour-card-img img-khodja-1"></div>
+                        <div class="tour-card-img img-khodja-2"></div>
+                        <div class="tour-card-img img-khodja-3"></div>
+                    </div>
+                    <div class="tour-info">
+                        <h3>Ходжа Сангхок</h3>
+                        <p>Поход к святым местам и величественным скалам. Уникальный маршрут для ценителей природы.</p>
+                        <div class="price-tag">
+                            <a href="https://www.instagram.com/zuzi_tour" target="_blank">
+                            <span class="price">Direct</span></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <h2>Почему Zuzi Tour?</h2>
+            <div class="benefit-grid">
+                <div class="benefit-item">
+                    <span class="benefit-icon">🏔️</span>
+                    <h3>Знание региона</h3>
+                    <p>Мы открываем тропы, которых нет в путеводителях и на картах.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📸</span>
+                    <h3>Фото-туры</h3>
+                    <p>Покажем лучшие ракурсы для ваших незабываемых снимков.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🛡️</span>
+                    <h3>Безопасность</h3>
+                    <p>Проверенные маршруты и сопровождение опытных местных гидов.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Готовы отправиться в путь?</h2>
+            <p>Напишите нам в Instagram, чтобы забронировать место в группе.</p>
+            <a href="https://www.instagram.com/zuzi_tour" target="_blank" class="btn btn-insta">Написать в Direct</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Zuzi Tour. Путешествуй безопасно. Путешествуй красиво.</p>
+    </footer>
+
+</body>
+</html>
