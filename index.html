@@ -6,6 +6,11 @@
     <title>Zuzi Tour — Горные туры по Таджикистану</title>
     <style>
         /* Базовые настройки стиля */
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         body { 
@@ -14,6 +19,7 @@
             scroll-behavior: smooth; 
             background-color: #fff;
             overflow-x: hidden;
+            width: 100%;
         }
         
         a { text-decoration: none; color: inherit; }
@@ -81,7 +87,8 @@
         .tours { background: #f9f9f9; }
         .tour-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            /* Изменено для предотвращения вылезания карточек на мобильных: */
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); 
             gap: 40px; 
         }
         .tour-card { 
@@ -118,7 +125,7 @@
             background-color: #eee;
         }
 
-        /* ПУТИ К ФАЙЛАМ (по 3 на каждое направление) */
+        /* ПУТИ К ФАЙЛАМ */
         .img-iskanderkul-1 { background-image: url('iskanderkul.jpg'); }
         .img-iskanderkul-2 { background-image: url('iskanderkul2.jpg'); }
         .img-iskanderkul-3 { background-image: url('iskanderkul3.jpg'); }
@@ -145,7 +152,8 @@
         .benefits { background: #fff; }
         .benefit-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            /* Изменено для предотвращения вылезания на мобильных: */
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); 
             gap: 40px; 
         }
         .benefit-item { 
@@ -198,7 +206,7 @@
 <header>
     <div class="logo">
         <a href="#" class="logo-link">
-            <img src="logo.jpg">
+            <img src="logo.jpg" alt="Zuzi Tour">
         </a>
     </div>
     <nav>
